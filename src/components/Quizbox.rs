@@ -1,3 +1,4 @@
+use crate::components::Answers::Answers;
 use crate::components::Front::Cat;
 use crate::components::SafeHtml::SafeHtml;
 use gloo_console::log;
@@ -106,6 +107,7 @@ pub fn quizbox(props: &Props) -> Html {
             setCorrect={setCorrect}
             correct={correct}
           />*/
+          <Answers />
         </div>
         /*{disabled &&*/
          <div class={classes!("px-6", "pt-4", "pb-2", "text-center")}>
