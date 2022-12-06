@@ -9,6 +9,7 @@ use yew::events::MouseEvent;
 use yew::prelude::*;
 use yew::{function_component, html, Html, Properties};
 
+
 #[derive(Properties, PartialEq)]
 pub struct Props {
     pub category: Cat,
@@ -38,8 +39,16 @@ pub fn quizbox(props: &Props) -> Html {
     let current_question = use_state(|| 0);
     let question_count = use_state(|| 0);
     let category_title = use_state(|| String::new());
+    let disabled = use_state(|| false);
+    let score = use_state(|| 0);
+    let correct = use_state(|| "".to_string());
+
+    
 
     //let questions_value = (*questions).clone();
+    let disabled_value = (*disabled).clone();
+    let score_value = (*score).clone();
+    let correct_value = (*correct).clone();
     let current_question_value = (*current_question).clone();
     let question_count_value = (*question_count).clone();
     let category_title_value = (*category_title).clone();
@@ -107,7 +116,16 @@ pub fn quizbox(props: &Props) -> Html {
             setCorrect={setCorrect}
             correct={correct}
           />*/
-          <Answers />
+          <Answers
+            incorrect_answers={questions[current_question_value].incorrect_answers.clone()}
+            correct_answer={questions[current_question_value].correct_answer.clone()}
+            disabled={disabled_value}
+            //set_disabled={disabled.clone()}
+            //set_score={score.clone()}
+            score={score_value}
+            //set_correct={correct.clone()}
+            correct={correct_value} 
+          />
         </div>
         /*{disabled &&*/
          <div class={classes!("px-6", "pt-4", "pb-2", "text-center")}>
