@@ -785,12 +785,12 @@ function getImports() {
         const ret = wasm.memory;
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper8934 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 532, __wbg_adapter_26);
+    imports.wbg.__wbindgen_closure_wrapper9406 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 556, __wbg_adapter_26);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper9264 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 537, __wbg_adapter_29);
+    imports.wbg.__wbindgen_closure_wrapper9736 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 561, __wbg_adapter_29);
         return addHeapObject(ret);
     };
 
@@ -828,7 +828,7 @@ function initSync(module) {
 
 async function init(input) {
     if (typeof input === 'undefined') {
-        input = new URL('jd-quiz-yew-e86ecdf5b72a5416_bg.wasm', import.meta.url);
+        input = new URL('jd-quiz-yew-fde03393d69cd100_bg.wasm', import.meta.url);
     }
     const imports = getImports();
 
