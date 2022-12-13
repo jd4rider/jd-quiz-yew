@@ -13,15 +13,15 @@
     "routes": [
         {
             "src": "/",
-            "dest": "index.js"
+            "dest": "/server/index.js"
         },
         {
             "src": "/c(.*)",
-            "dest": "index.js"
+            "dest": "/server/index.js"
         },
         {
             "src": "/q(.*)",
-            "dest": "index.js"
+            "dest": "/server/index.js"
         },
         {
             "src": "/(.*)",
