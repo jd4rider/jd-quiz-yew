@@ -55,24 +55,15 @@ pub fn answers(props: &Props) -> Html {
         e.prevent_default();
         
         let answer = target.unchecked_into::<HtmlInputElement>().value();
-        let object = JsValue::from("world");
-        web_sys::console::log_1(&answer.clone().into());
-        //web_sys::window().alert("You clicked an answer!"); 
+        
         answers_clicked.set(answer.clone());
         if answer == correct_answer_for_callback.clone() {
-            //web_sys::window().expect("panic!").alert("You got it right!");
-            let object = JsValue::from("You got it right!");
-            web_sys::console::log_1(&object.into()); 
             set_score.emit(score + 1);
             set_correct.emit("correct".to_string());
         }
         else {
-            //eb_sys::window().expect("panic!").alert("You got it wrong!");
-            let object = JsValue::from("You got it wrong!");
-            web_sys::console::log_1(&object.into());  
             set_correct.emit("incorrect".to_string());
         }
-        //Pin::new(&mut disabled).set(true);
         set_disabled.emit(true);
     });
 

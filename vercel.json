@@ -1,0 +1,31 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "server/index.js",
+        "use": "@now/node"
+      },
+      {
+        "src": "dist/**",
+        "use": "@vercel/static"
+      }
+    ],
+    "routes": [
+        {
+            "src": "/",
+            "dest": "index.js"
+        },
+        {
+            "src": "/c(.*)",
+            "dest": "index.js"
+        },
+        {
+            "src": "/q(.*)",
+            "dest": "index.js"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/public/$1"
+        }
+    ]
+  }

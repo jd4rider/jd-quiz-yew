@@ -103,10 +103,10 @@ pub fn quizbox(props: &Props) -> Html {
         let questions = questions.clone();
         let question_count = question_count.clone();
         let url = if props.category.id == 0 {
-            format!("http://localhost:3000/questions?amount={}", props.number)
+            format!("/questions?amount={}", props.number)
         } else {
             format!(
-                "http://localhost:3000/questions?amount={}&category={}",
+                "/questions?amount={}&category={}",
                 props.number, props.category.id
             )
         };
