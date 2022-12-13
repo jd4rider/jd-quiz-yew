@@ -1,4 +1,4 @@
-To run the app run 
+To run the app execute the following:
 
 ```lang-none
 npm install --prefix server/
