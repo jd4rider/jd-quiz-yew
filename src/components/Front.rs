@@ -74,7 +74,7 @@ pub fn front() -> Html {
             move |_| {
                 wasm_bindgen_futures::spawn_local(async move {
                     let fetched_categories: Vec<Cat> =
-                        Request::get("/categories")
+                        Request::get("/api/categories")
                             .send()
                             .await
                             .unwrap()

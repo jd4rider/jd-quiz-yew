@@ -16,15 +16,11 @@
             "dest": "/server/index.ts"
         },
         {
-            "src": "/c(.*)",
+            "src": "/api/(.*)",
             "dest": "/server/index.ts"
         },
         {
-            "src": "/q(.*)",
-            "dest": "/server/index.ts"
-        },
-        {
-            "src": "/gr(.*)",
+            "src": "/graphql/(.*)",
             "dest": "/server/index.ts"
         },
         {

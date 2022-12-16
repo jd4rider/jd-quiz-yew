@@ -823,7 +823,7 @@ function initSync(module) {
 
 async function init(input) {
     if (typeof input === 'undefined') {
-        input = new URL('jd-quiz-yew-d98af3fe546f3a02_bg.wasm', import.meta.url);
+        input = new URL('jd-quiz-yew-ff5a6d0e1276968b_bg.wasm', import.meta.url);
     }
     const imports = getImports();
 

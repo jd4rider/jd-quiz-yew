@@ -65,7 +65,7 @@ app.use('/graphql', graphqlHTTP({
     graphiql: true,
 }));
 
-app.get('/categories', async (req, res) => {
+app.get('/api/categories', async (req, res) => {
     try {
         const response = await fetch('https://opentdb.com/api_category.php');
         const categories = await response.json();
@@ -75,7 +75,7 @@ app.get('/categories', async (req, res) => {
     }
 });
 
-app.get('/questions', async (req, res) => {
+app.get('/api/questions', async (req, res) => {
   try{
     if (req.query.category) {
       const response = await fetch('https://opentdb.com/api.php?amount=' + req.query.amount + '&category=' + req.query.category);
