@@ -2,7 +2,7 @@
     "version": 2,
     "builds": [
       {
-        "src": "server/index.ts",
+        "src": "server/index.js",
         "use": "@now/node"
       },
       {
@@ -13,19 +13,12 @@
     "routes": [
         {
             "src": "/",
-            "dest": "/server/index.ts"
+            "dest": "/server/index.js"
         },
+
         {
-          "src": "/graphql",
-          "dest": "/server/index.ts"
-        },
-        {
-            "src": "/api/c(.*)",
-            "dest": "/server/index.ts"
-        },
-        {
-          "src": "/api/q(.*)",
-          "dest": "/server/index.ts"
+          "src": "/api/(.*)",
+          "dest": "/server/index.js"
         },
 
         {

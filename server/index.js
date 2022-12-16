@@ -18,14 +18,14 @@ app.get('/', function(req, res) {
 });
 
 
-app.get('/categories', (req, res) => {
+app.get('/api/categories', (req, res) => {
   fetch('https://opentdb.com/api_category.php')
     .then(response => response.json())
     .then(json => res.send(json.trivia_categories))
 
 })
 
-app.get('/questions', (req, res) => {
+app.get('/api/questions', (req, res) => {
   if (req.query.category)
     fetch('https://opentdb.com/api.php?amount=' + req.query.amount + '&category=' + req.query.category)
       .then(response => response.json())
@@ -44,7 +44,18 @@ app.get('/questions', (req, res) => {
   else
     fetch('https://opentdb.com/api.php?amount=' + req.query.amount)
       .then(response => response.json())
-      .then(json => res.send(json.results))
+      .then(needsmanip => {
+        return needsmanip.results.map(item => {
+          return {
+            category: item.category,
+            difficulty: item.difficulty,
+            question: item.question,
+            correct_answer: item.correct_answer,
+            incorrect_answers: item.incorrect_answers
+          }
+        })
+      })
+      .then(json => res.send(json))
 })
 
 app.listen(port, () => {
