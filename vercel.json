@@ -24,7 +24,7 @@
             "dest": "/server/index.ts"
         },
         {
-            "src": "/graphql",
+            "src": "/gr(.*)",
             "dest": "/server/index.ts"
         },
         {
