@@ -3,7 +3,7 @@
     "builds": [
       {
         "src": "server/index.ts",
-        "use": "@now/node"
+        "use": "@now/node-server"
       },
       {
         "src": "dist/**",
