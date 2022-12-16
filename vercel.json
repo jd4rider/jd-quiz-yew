@@ -24,6 +24,10 @@
             "dest": "/server/index.ts"
         },
         {
+            "src": "/graphql",
+            "dest": "/server/index.ts"
+        },
+        {
             "src": "/(.*)",
             "dest": "/dist/$1"
         }
