@@ -3,14 +3,15 @@ import prisma from "./prisma" // importing the prisma instance we created.
 import { graphqlHTTP } from 'express-graphql';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import path from 'path';
+import fetch from 'node-fetch';
 
 // eslint-disable-next-line no-new-func
 const importDynamic = new Function('modulePath', 'return import(modulePath)');
 
-const fetch = async (...args:any[]) => {
-  const module = await importDynamic('node-fetch');
-  return module.default(...args);
-};
+// const fetch = async (...args:any[]) => {
+//   const module = await importDynamic('node-fetch');
+//   return module.default(...args);
+// };
 
 type Cat = {
     id: number,
