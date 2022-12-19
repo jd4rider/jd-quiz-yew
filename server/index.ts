@@ -108,54 +108,6 @@ app.use('/graphql', graphqlHTTP({
     graphiql: true,
 }));
 
-// app.get('/api/categories', async (req, res) => {
-//     try {
-//         const response = await fetch('https://opentdb.com/api_category.php');
-//         const categories = await response.json();
-//         res.send((categories as Categories).trivia_categories);
-//     } catch (err) {
-//         res.status(500).send(err);
-//     }
-// });
-
-// app.get('/api/questions', async (req, res) => {
-//   try{
-//     if (req.query.category) {
-//       const response = await fetch('https://opentdb.com/api.php?amount=' + req.query.amount + '&category=' + req.query.category);
-//       const categories = await response.json();
-//       const json = await categories.results.map((item: { category: any; difficulty: any; question: any; correct_answer: any; incorrect_answers: any; }) => {
-//         return {
-//           category: item.category,
-//           difficulty: item.difficulty,
-//           question: item.question,
-//           correct_answer: item.correct_answer,
-//           incorrect_answers: item.incorrect_answers
-//         }
-//       })
-//       res.send(json);
-//     }
-//     else {
-//       const response = await fetch('https://opentdb.com/api.php?amount=' + req.query.amount);
-//       const categories = await response.json();
-//       const json = await categories.results.map((item: { category: any; difficulty: any; question: any; correct_answer: any; incorrect_answers: any; }) => {
-//         return {
-//           category: item.category,
-//           difficulty: item.difficulty,
-//           question: item.question,
-//           correct_answer: item.correct_answer,
-//           incorrect_answers: item.incorrect_answers
-//         }
-//       })
-//       res.send(json);
-//     }
-//   } catch (err) {
-//      res.status(500).send(err);
-//   }
-// });
-
-
-
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
-
 
 export default app;
