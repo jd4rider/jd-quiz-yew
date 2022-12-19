@@ -411,11 +411,6 @@ function getImports() {
         wasm.__wbindgen_free(arg0, arg1 * 4);
         console.error(...v0);
     };
-    imports.wbg.__wbg_log_1f7f93998ab961f7 = function(arg0, arg1) {
-        var v0 = getArrayJsValueFromWasm0(arg0, arg1).slice();
-        wasm.__wbindgen_free(arg0, arg1 * 4);
-        console.log(...v0);
-    };
     imports.wbg.__wbg_instanceof_Window_acc97ff9f5d2c7b4 = function(arg0) {
         let result;
         try {
@@ -467,6 +462,9 @@ function getImports() {
     imports.wbg.__wbg_new_2d0053ee81e4dd2a = function() { return handleError(function () {
         const ret = new Headers();
         return addHeapObject(ret);
+    }, arguments) };
+    imports.wbg.__wbg_set_992c1d31586b2957 = function() { return handleError(function (arg0, arg1, arg2, arg3, arg4) {
+        getObject(arg0).set(getStringFromWasm0(arg1, arg2), getStringFromWasm0(arg3, arg4));
     }, arguments) };
     imports.wbg.__wbg_url_1c013f0875e97715 = function(arg0, arg1) {
         const ret = getObject(arg1).url;
@@ -780,12 +778,12 @@ function getImports() {
         const ret = wasm.memory;
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper730 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 313, __wbg_adapter_26);
+    imports.wbg.__wbindgen_closure_wrapper816 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 318, __wbg_adapter_26);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper963 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 428, __wbg_adapter_29);
+    imports.wbg.__wbindgen_closure_wrapper1050 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 433, __wbg_adapter_29);
         return addHeapObject(ret);
     };
 
@@ -823,7 +821,7 @@ function initSync(module) {
 
 async function init(input) {
     if (typeof input === 'undefined') {
-        input = new URL('jd-quiz-yew-ff5a6d0e1276968b_bg.wasm', import.meta.url);
+        input = new URL('jd-quiz-yew-dbd103b07f4354bc_bg.wasm', import.meta.url);
     }
     const imports = getImports();
 

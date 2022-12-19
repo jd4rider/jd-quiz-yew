@@ -1,0 +1,9 @@
+query QuestionsWAmount($amount: Int!) {
+  questionsByAmount(amount: $amount) {
+    category
+    difficulty
+    question
+    correct_answer
+    incorrect_answers
+  }
+}

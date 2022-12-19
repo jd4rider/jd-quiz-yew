@@ -8,6 +8,20 @@ use wasm_bindgen::JsValue;
 use yew::events::MouseEvent;
 use yew::prelude::*;
 use yew::{function_component, html, Html, Properties};
+use graphql_client::{GraphQLQuery, Response};
+use std::error::Error;
+use std::convert::TryInto;
+use std::sync::Arc;
+use crate::components::Quizbox::question_w_amountand_cat::QuestionWAmountandCatQuestionsByAmountAndCategoryId;
+
+
+#[derive(GraphQLQuery)]
+#[graphql(
+    schema_path = "graphql/opentdb_schema.json",
+    query_path = "graphql/questionswamountandcat.graphql",
+    response_derives = "Debug, Clone"
+)]
+pub struct QuestionWAmountandCat;
 
 
 #[derive(Properties, PartialEq)]
@@ -28,7 +42,7 @@ pub struct Question {
 #[function_component(Quizbox)]
 pub fn quizbox(props: &Props) -> Html {
     let questions = use_state(|| {
-        vec![Question {
+        vec![QuestionWAmountandCatQuestionsByAmountAndCategoryId {
             category: "".to_string(),
             difficulty: "".to_string(),
             question: "".to_string(),
@@ -102,6 +116,8 @@ pub fn quizbox(props: &Props) -> Html {
     {
         let questions = questions.clone();
         let question_count = question_count.clone();
+        let question_number = props.number.clone();
+        let cat_id = props.category.id.clone();
         let url = if props.category.id == 0 {
             format!("/api/questions?amount={}", props.number)
         } else {
@@ -113,17 +129,25 @@ pub fn quizbox(props: &Props) -> Html {
         use_effect_with_deps(
             move |_| {
                 wasm_bindgen_futures::spawn_local(async move {
-                    let fetched_questions: Vec<Question> = Request::get(&url)
-                        .send()
-                        .await
-                        .unwrap()
-                        .json()
-                        .await
-                        .unwrap();
-                    let object = JsValue::from(fetched_questions[0].question.clone());
-                    log!(object);
+                    let cat_id_int: i64 = cat_id.try_into().unwrap();
+                    let question_number_int: i64 = question_number.parse().unwrap();
+                    let request_body = QuestionWAmountandCat::build_query(question_w_amountand_cat::Variables {
+                          amount: question_number_int,
+                          category_id: cat_id_int,
+                    });
+                    let response_body: Response<question_w_amountand_cat::ResponseData> = Request::post("/graphql")
+                      .json(&request_body)
+                          .unwrap()
+                          .send()
+                          .await
+                          .unwrap()
+                          .json::<Response<question_w_amountand_cat::ResponseData>>()
+                          .await
+                          .unwrap();
+                    let fetched_questions = response_body.data.unwrap().questions_by_amount_and_category_id;
                     questions.set(fetched_questions.clone());
                     question_count.set(fetched_questions.len());
+                    
                 });
                 || ()
             },

@@ -1,0 +1,9 @@
+query QuestionWAmountandCat($amount: Int!, $category_id: Int!) {
+  questionsByAmountAndCategoryId(amount: $amount, category_id: $category_id) {
+    category
+    difficulty
+    question
+    correct_answer
+    incorrect_answers
+  }
+}

@@ -16,3 +16,7 @@ web-sys = "0.3.60"
 gloo-utils = "0.1.2"
 getrandom = { version = "0.2", features = ["js"] }
 rand = "0.8.5"
+graphql_client = "0.11.0" 
+gloo = "0.8.0"
+
+

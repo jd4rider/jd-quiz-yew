@@ -6,8 +6,19 @@ use wasm_bindgen::JsValue;
 use web_sys::{EventTarget, HtmlInputElement};
 use yew::events::SubmitEvent;
 use yew::prelude::*;
+use graphql_client::{GraphQLQuery, Response};
+use std::error::Error;
+//use reqwest;
 
 use crate::components::Quizbox::Quizbox;
+
+#[derive(GraphQLQuery)]
+#[graphql(
+    schema_path = "graphql/opentdb_schema.json",
+    query_path = "graphql/categories.graphql",
+    response_derives = "Debug"
+)]
+pub struct Categories;
 
 #[derive(Clone, PartialEq, Deserialize)]
 pub struct Cat {
@@ -18,6 +29,7 @@ pub struct Cat {
 #[function_component(Front)]
 pub fn front() -> Html {
     let category = use_state(|| vec![]);
+    //let categories_state = use_state(|| vec![]);
     let startQuiz = use_state(|| false);
     let categoryPicked = use_state(|| Cat {
         id: 0,
@@ -70,18 +82,23 @@ pub fn front() -> Html {
 
     {
         let category = category.clone();
+        //let categories_state = categories_state.clone();
         use_effect_with_deps(
             move |_| {
                 wasm_bindgen_futures::spawn_local(async move {
-                    let fetched_categories: Vec<Cat> =
-                        Request::get("/api/categories")
-                            .send()
-                            .await
-                            .unwrap()
-                            .json()
-                            .await
-                            .unwrap();
-                    category.set(fetched_categories.clone());
+                  let request_body = Categories::build_query(categories::Variables {});
+                  let response_body: Response<categories::ResponseData> = Request::post("/graphql")
+                          .json(&request_body)
+                          .unwrap()
+                          .send()
+                          .await
+                          .unwrap()
+                          .json::<Response<categories::ResponseData>>()
+                          .await
+                          .unwrap();
+                  //gloo::console::log!(format!("{:?}", response_body));
+                  category.set(response_body.data.unwrap().all_categories);
+                  
                 });
                 || ()
             },
@@ -126,7 +143,8 @@ pub fn front() -> Html {
             </button>
           </div>
         </div>
-      </form>}
+      </form>
+      }
       else {
           <Quizbox category={categoryPickedValue} number={numberQuestionsValue} />
       }
