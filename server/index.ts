@@ -4,6 +4,7 @@ import { graphqlHTTP } from 'express-graphql';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import path from 'path';
 //import fetch from 'node-fetch';
+import axios from 'axios';
 
 // eslint-disable-next-line no-new-func
 const importDynamic = new Function('modulePath', 'return import(modulePath)');
@@ -67,33 +68,33 @@ const resolvers = {
             return prisma.user.findMany();
         },
         allCategories: async () => {
-            const response = await fetch('https://opentdb.com/api_category.php');
-            const categories = await response.json();
+            const response = await axios.get('https://opentdb.com/api_category.php');
+            const categories = await response.data;
             return (categories as Categories).trivia_categories;
         },
         allQuestions: async () => {
-            const response = await fetch('https://opentdb.com/api.php');
-            const categories = await response.json();
+            const response = await axios.get('https://opentdb.com/api.php');
+            const categories = await response.data;
             return categories.results;
         },
         questionsByAmount: async (_: any, args: { amount: number; }) => {
-            const response = await fetch('https://opentdb.com/api.php?amount=' + args.amount);
-            const categories = await response.json();
+            const response = await axios.get('https://opentdb.com/api.php?amount=' + args.amount);
+            const categories = await response.data;
             return categories.results;
         },
         questionsByCategoryId: async (_: any, args: { category_id: number; }) => {
-            const response = await fetch('https://opentdb.com/api.php?amount=10&category=' + args.category_id);
-            const categories = await response.json();
+            const response = await axios.get('https://opentdb.com/api.php?amount=10&category=' + args.category_id);
+            const categories = await response.data;
             return categories.results;
         },
         questionsByAmountAndCategoryId: async (_: any, args: { amount: number; category_id: number; }) => {
             if (args.category_id === 0) {
-                const response = await fetch('https://opentdb.com/api.php?amount=' + args.amount);
-                const categories = await response.json();
+                const response = await axios.get('https://opentdb.com/api.php?amount=' + args.amount);
+                const categories = await response.data;
                 return categories.results;
             } else {
-                const response = await fetch('https://opentdb.com/api.php?amount=' + args.amount + '&category=' + args.category_id);
-                const categories = await response.json();
+                const response = await axios.get('https://opentdb.com/api.php?amount=' + args.amount + '&category=' + args.category_id);
+                const categories = await response.data;
                 return categories.results;
             }
         }
