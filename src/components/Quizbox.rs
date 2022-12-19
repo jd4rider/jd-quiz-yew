@@ -177,15 +177,6 @@ pub fn quizbox(props: &Props) -> Html {
           <div class={classes!("font-bold", "text-xl", "mb-2", "text-center", "py-4")}>
             <SafeHtml html={questions[current_question_value].question.clone()} />
           </div>
-          /*<Answers incorrectAnswers={quizQuestions[currentQuestion]?.incorrect_answers}
-            correctAnswer={quizQuestions[currentQuestion]?.correct_answer}
-            disabled={disabled}
-            setDisabled={setDisabled}
-            setScore={setScore}
-            score={score}
-            setCorrect={setCorrect}
-            correct={correct}
-          />*/
           <Answers
             incorrect_answers={questions[current_question_value].incorrect_answers.clone()}
             correct_answer={questions[current_question_value].correct_answer.clone()}
