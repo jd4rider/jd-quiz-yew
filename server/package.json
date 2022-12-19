@@ -25,7 +25,6 @@
     "@types/node-fetch": "^2.6.2",
     "axios": "^1.2.1",
     "express": "^4.18.2",
-    "express-graphql": "^0.12.0",
-    "node-fetch": "^3.3.0"
+    "express-graphql": "^0.12.0"
   }
 }
