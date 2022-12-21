@@ -28,6 +28,7 @@ pub struct QuestionWAmountandCat;
 pub struct Props {
     pub category: Cat,
     pub number: String,
+    pub difficulty: String,
 }
 
 #[derive(Clone, PartialEq, Deserialize)]
@@ -113,19 +114,16 @@ pub fn quizbox(props: &Props) -> Html {
         correct_callback.emit("unanswered".to_string());
     });
 
+    fn capitalize_first_letter(s: &str) -> String {
+      s[0..1].to_uppercase() + &s[1..]
+    }
+
     {
         let questions = questions.clone();
         let question_count = question_count.clone();
         let question_number = props.number.clone();
         let cat_id = props.category.id.clone();
-        let url = if props.category.id == 0 {
-            format!("/api/questions?amount={}", props.number)
-        } else {
-            format!(
-                "/api/questions?amount={}&category={}",
-                props.number, props.category.id
-            )
-        };
+        let difficulty = props.difficulty.clone();
         use_effect_with_deps(
             move |_| {
                 wasm_bindgen_futures::spawn_local(async move {
@@ -134,6 +132,7 @@ pub fn quizbox(props: &Props) -> Html {
                     let request_body = QuestionWAmountandCat::build_query(question_w_amountand_cat::Variables {
                           amount: question_number_int,
                           category_id: cat_id_int,
+                          difficulty: difficulty,
                     });
                     let response_body: Response<question_w_amountand_cat::ResponseData> = Request::post("/graphql")
                       .json(&request_body)
@@ -164,6 +163,8 @@ pub fn quizbox(props: &Props) -> Html {
             {format!("Question #{} of {}", current_question_value + 1, question_count_value)}
             <br />
             {format!("Category: {}", props.category.name.clone())}
+            <br />
+            {format!("Difficulty: {}", capitalize_first_letter(&props.difficulty.clone()))}
           </h3>
           if correct_value.clone() == "correct" { 
             <div class={classes!("bg-green-100", "border-t", "border-b", "border-green-500", "text-green-700", "px-4", "py-3")} role={"alert"}>

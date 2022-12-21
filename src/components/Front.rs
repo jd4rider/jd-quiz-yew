@@ -35,6 +35,7 @@ pub fn front() -> Html {
         id: 0,
         name: "Any Category".to_string(),
     });
+    let difficulty_picked = use_state(|| "any".to_string());
     let numberQuestions = use_state(|| "10".to_string());
 
     let numberQuestionsValue = (*numberQuestions).clone();
@@ -42,6 +43,8 @@ pub fn front() -> Html {
     let startQuizValue = (*startQuiz).clone();
 
     let categoryPickedValue = (*categoryPicked).clone();
+
+    let difficulty_picked_value = (*difficulty_picked).clone();
 
     let start_handler = Callback::from(move |e: SubmitEvent| {
         e.prevent_default();
@@ -67,6 +70,19 @@ pub fn front() -> Html {
             name: cat_name.to_string(),
         };
         categoryPicked.set(value);
+    });
+
+    let difficulty_handler = Callback::from(move |e: Event| {
+      let target: EventTarget = e
+          .target()
+          .expect("Event should have a target when dispatched");
+      // You must KNOW target is a HtmlInputElement, otherwise
+      // the call to value would be Undefined Behaviour (UB).
+      // Here we are sure that this is input element so we can convert it to the appropriate type without checking
+      let difficulty_info = target.unchecked_into::<HtmlInputElement>().value();
+      let difficulty_info = difficulty_info.to_lowercase();
+      
+      difficulty_picked.set(difficulty_info);
     });
 
     let number_handler = Callback::from(move |e: Event| {
@@ -135,6 +151,21 @@ pub fn front() -> Html {
             </select>
           </div>
         </div>
+        <div class={classes!("md:flex", "md:items-center", "mb-6")}>
+          <div class={classes!("md:w-1/3")}>
+            <label class={classes!("block", "text-gray-500", "font-bold", "md:text-right", "mb-1", "md:mb-0", "pr-4")} htmlFor="difficulty">
+            { "Quiz Difficulty" }
+            </label>
+          </div>
+          <div class={classes!("md:w-2/3")}>
+            <select id="difficulty" class={classes!("block", "w-full", "bg-white", "border", "border-gray-400", "hover:border-gray-500", "px-4", "py-2", "pr-8", "rounded", "shadow", "leading-tight", "focus:outline-none", "focus:shadow-outline")} onchange={difficulty_handler} >
+              <option selected={true}>{"Any Difficulty"}</option>
+              <option>{"Easy"}</option>
+              <option>{"Medium"}</option>
+              <option>{"Hard"}</option>
+            </select>
+          </div>
+        </div>
         <div class={classes!("md:flex", "md:items-center")}>
           <div class={classes!("md:w-1/3")}></div>
           <div class={classes!("md:w-2/3")}>
@@ -146,7 +177,7 @@ pub fn front() -> Html {
       </form>
       }
       else {
-          <Quizbox category={categoryPickedValue} number={numberQuestionsValue} />
+          <Quizbox category={categoryPickedValue} number={numberQuestionsValue} difficulty={difficulty_picked_value} />
       }
     }
 }

@@ -48,7 +48,7 @@ const typeDefs = `
     allQuestions: [Questions!]!
     questionsByAmount(amount: Int!): [Questions!]!
     questionsByCategoryId(category_id: Int!): [Questions!]!
-    questionsByAmountAndCategoryId(amount: Int!, category_id: Int): [Questions!]!
+    questionsByAmountAndCategoryId(amount: Int!, category_id: Int, difficulty: String): [Questions!]!
   }
 
 `;
@@ -78,16 +78,20 @@ const resolvers = {
             const categories = await response.data;
             return categories.results;
         },
-        questionsByAmountAndCategoryId: async (_: any, args: { amount: number; category_id: number; }) => {
-            if (args.category_id === 0) {
-                const response = await axios.get('https://opentdb.com/api.php?amount=' + args.amount);
-                const categories = await response.data;
-                return categories.results;
+        questionsByAmountAndCategoryId: async (_: any, args: { amount: number; category_id: number; difficulty: string }) => {
+            let url = "";
+            if (args.difficulty === "any" && args.category_id === 0) {
+                url = 'https://opentdb.com/api.php?amount=' + args.amount;
+            } else if (args.difficulty === "any" && args.category_id !== 0) {
+                url = 'https://opentdb.com/api.php?amount=' + args.amount + '&category=' + args.category_id;
+            } else if (args.difficulty !== "any" && args.category_id === 0) {
+                url = 'https://opentdb.com/api.php?amount=' + args.amount + '&difficulty=' + args.difficulty;
             } else {
-                const response = await axios.get('https://opentdb.com/api.php?amount=' + args.amount + '&category=' + args.category_id);
-                const categories = await response.data;
-                return categories.results;
+                url = 'https://opentdb.com/api.php?amount=' + args.amount + '&category=' + args.category_id + '&difficulty=' + args.difficulty;
             }
+            const response = await axios.get(url);
+            const categories = await response.data;
+            return categories.results;
         }
     }
 };
