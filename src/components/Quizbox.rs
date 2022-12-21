@@ -29,6 +29,7 @@ pub struct Props {
     pub category: Cat,
     pub number: String,
     pub difficulty: String,
+    pub quiz_type: String,
 }
 
 #[derive(Clone, PartialEq, Deserialize)]
@@ -124,6 +125,7 @@ pub fn quizbox(props: &Props) -> Html {
         let question_number = props.number.clone();
         let cat_id = props.category.id.clone();
         let difficulty = props.difficulty.clone();
+        let quiz_type = props.quiz_type.clone();
         use_effect_with_deps(
             move |_| {
                 wasm_bindgen_futures::spawn_local(async move {
@@ -133,6 +135,7 @@ pub fn quizbox(props: &Props) -> Html {
                           amount: question_number_int,
                           category_id: cat_id_int,
                           difficulty: difficulty,
+                          quiz_type: quiz_type,
                     });
                     let response_body: Response<question_w_amountand_cat::ResponseData> = Request::post("/graphql")
                       .json(&request_body)

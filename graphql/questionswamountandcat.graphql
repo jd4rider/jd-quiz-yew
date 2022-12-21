@@ -1,5 +1,5 @@
-query QuestionWAmountandCat($amount: Int!, $category_id: Int!, $difficulty: String!) {
-  questionsByAmountAndCategoryId(amount: $amount, category_id: $category_id, difficulty: $difficulty) {
+query QuestionWAmountandCat($amount: Int!, $category_id: Int!, $difficulty: String!, $quiz_type: String!) {
+  questionsByAmountAndCategoryId(amount: $amount, category_id: $category_id, difficulty: $difficulty, quiz_type: $quiz_type) {
     category
     difficulty
     question

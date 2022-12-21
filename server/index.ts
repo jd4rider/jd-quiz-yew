@@ -48,7 +48,7 @@ const typeDefs = `
     allQuestions: [Questions!]!
     questionsByAmount(amount: Int!): [Questions!]!
     questionsByCategoryId(category_id: Int!): [Questions!]!
-    questionsByAmountAndCategoryId(amount: Int!, category_id: Int, difficulty: String): [Questions!]!
+    questionsByAmountAndCategoryId(amount: Int!, category_id: Int, difficulty: String, quiz_type: String): [Questions!]!
   }
 
 `;
@@ -78,16 +78,24 @@ const resolvers = {
             const categories = await response.data;
             return categories.results;
         },
-        questionsByAmountAndCategoryId: async (_: any, args: { amount: number; category_id: number; difficulty: string }) => {
+        questionsByAmountAndCategoryId: async (_: any, args: { amount: number; category_id: number; difficulty: string; quiz_type: string }) => {
             let url = "";
-            if (args.difficulty === "any" && args.category_id === 0) {
-                url = 'https://opentdb.com/api.php?amount=' + args.amount;
-            } else if (args.difficulty === "any" && args.category_id !== 0) {
+            if (args.difficulty === "any" && args.quiz_type === "any" && args.category_id !== 0) {
                 url = 'https://opentdb.com/api.php?amount=' + args.amount + '&category=' + args.category_id;
-            } else if (args.difficulty !== "any" && args.category_id === 0) {
+            } else if (args.difficulty !== "any" && args.category_id === 0 && args.quiz_type === "any") {
                 url = 'https://opentdb.com/api.php?amount=' + args.amount + '&difficulty=' + args.difficulty;
-            } else {
+            } else if (args.difficulty !== "any" && args.category_id !== 0 && args.quiz_type === "any") {
                 url = 'https://opentdb.com/api.php?amount=' + args.amount + '&category=' + args.category_id + '&difficulty=' + args.difficulty;
+            } else if (args.difficulty === "any" && args.category_id === 0 && args.quiz_type !== "any") {
+                url = 'https://opentdb.com/api.php?amount=' + args.amount + '&type=' + args.quiz_type;
+            } else if (args.difficulty === "any" && args.category_id !== 0 && args.quiz_type !== "any") {
+                url = 'https://opentdb.com/api.php?amount=' + args.amount + '&category=' + args.category_id + '&type=' + args.quiz_type;
+            } else if (args.difficulty !== "any" && args.category_id === 0 && args.quiz_type !== "any") {
+                url = 'https://opentdb.com/api.php?amount=' + args.amount + '&difficulty=' + args.difficulty + '&type=' + args.quiz_type;
+            } else if (args.difficulty !== "any" && args.category_id !== 0 && args.quiz_type !== "any") {
+                url = 'https://opentdb.com/api.php?amount=' + args.amount + '&category=' + args.category_id + '&difficulty=' + args.difficulty + '&type=' + args.quiz_type;
+            } else {
+                url = 'https://opentdb.com/api.php?amount=' + args.amount;
             }
             const response = await axios.get(url);
             const categories = await response.data;

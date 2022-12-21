@@ -36,6 +36,7 @@ pub fn front() -> Html {
         name: "Any Category".to_string(),
     });
     let difficulty_picked = use_state(|| "any".to_string());
+    let quiz_type_picked = use_state(|| "any".to_string());
     let numberQuestions = use_state(|| "10".to_string());
 
     let numberQuestionsValue = (*numberQuestions).clone();
@@ -45,6 +46,8 @@ pub fn front() -> Html {
     let categoryPickedValue = (*categoryPicked).clone();
 
     let difficulty_picked_value = (*difficulty_picked).clone();
+
+    let quiz_type_picked_value = (*quiz_type_picked).clone();
 
     let start_handler = Callback::from(move |e: SubmitEvent| {
         e.prevent_default();
@@ -80,9 +83,29 @@ pub fn front() -> Html {
       // the call to value would be Undefined Behaviour (UB).
       // Here we are sure that this is input element so we can convert it to the appropriate type without checking
       let difficulty_info = target.unchecked_into::<HtmlInputElement>().value();
-      let difficulty_info = difficulty_info.to_lowercase();
+      let mut difficulty_info = difficulty_info.to_lowercase();
+      if difficulty_info == "any difficulty" {
+        difficulty_info = "any".to_string();
+      }
       
       difficulty_picked.set(difficulty_info);
+    });
+
+    let type_handler = Callback::from(move |e: Event| {
+      let target: EventTarget = e
+          .target()
+          .expect("Event should have a target when dispatched");
+      // You must KNOW target is a HtmlInputElement, otherwise
+      // the call to value would be Undefined Behaviour (UB).
+      // Here we are sure that this is input element so we can convert it to the appropriate type without checking
+      let type_info = target.unchecked_into::<HtmlInputElement>().value();
+      if type_info == "Multiple Choice" {
+        quiz_type_picked.set("multiple".to_string());
+      } else if type_info == "True / False" {
+        quiz_type_picked.set("boolean".to_string());
+      } else {
+        quiz_type_picked.set("any".to_string());
+      }
     });
 
     let number_handler = Callback::from(move |e: Event| {
@@ -142,7 +165,7 @@ pub fn front() -> Html {
           </div>
           <div class={classes!("md:w-2/3")}>
             <select id="categories" class={classes!("block", "w-full", "bg-white", "border", "border-gray-400", "hover:border-gray-500", "px-4", "py-2", "pr-8", "rounded", "shadow", "leading-tight", "focus:outline-none", "focus:shadow-outline")} onchange={category_handler}>
-              <option>{"Any Category"}</option>
+              <option value={"0_Any Category"} selected={true}>{"Any Category"}</option>
               {
                 category.iter().map(|cat| {
                     html!{<option key={cat.id.to_string()} value={cat.id.to_string() + "_" + &cat.name.clone()}>{ format!("{}", cat.name) }</option>}
@@ -166,6 +189,20 @@ pub fn front() -> Html {
             </select>
           </div>
         </div>
+        <div class={classes!("md:flex", "md:items-center", "mb-6")}>
+          <div class={classes!("md:w-1/3")}>
+            <label class={classes!("block", "text-gray-500", "font-bold", "md:text-right", "mb-1", "md:mb-0", "pr-4")} htmlFor="quiztype">
+            { "Quiz Question Types" }
+            </label>
+          </div>
+          <div class={classes!("md:w-2/3")}>
+            <select id="quiztype" class={classes!("block", "w-full", "bg-white", "border", "border-gray-400", "hover:border-gray-500", "px-4", "py-2", "pr-8", "rounded", "shadow", "leading-tight", "focus:outline-none", "focus:shadow-outline")} onchange={type_handler} >
+              <option selected={true}>{"Any Type"}</option>
+              <option>{"Multiple Choice"}</option>
+              <option>{"True / False"}</option>
+            </select>
+          </div>
+        </div>
         <div class={classes!("md:flex", "md:items-center")}>
           <div class={classes!("md:w-1/3")}></div>
           <div class={classes!("md:w-2/3")}>
@@ -177,7 +214,7 @@ pub fn front() -> Html {
       </form>
       }
       else {
-          <Quizbox category={categoryPickedValue} number={numberQuestionsValue} difficulty={difficulty_picked_value} />
+          <Quizbox category={categoryPickedValue} number={numberQuestionsValue} difficulty={difficulty_picked_value} quiz_type={quiz_type_picked_value} />
       }
     }
 }
